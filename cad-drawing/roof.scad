@@ -7,58 +7,58 @@
     
 */
 
-
+use <roof-frame.scad>;
 
 module roof (
-    rotation,roofHeight,
-    studsAmount,
+    rotation,
     plankWidth,plankThickness,
     totalWidth,totalLength,
-    roofHangover,roofWidthIn){
+    roofHangover,roofThickness,
+    x,y,z){
 
 
 
 // ---------- Calculated varables ----------
-roofWidthOut = roofHangover*2+roofWidthIn; // calculated    
-studsSpacing = (roofWidthIn-(studsAmount*plankThickness)) /(studsAmount-1)-0.001;  // calculated 
-//studsAmount*plankThickness+i(studsAmount-1)=totalLength
+
     
 
 
 // ---------- Code ---------- 
 
-translate([0,0,roofHeight])
+translate([x,y,z])
 rotate([-rotation,0,0])     
 union(){
     
 // ---------- Stud ---------- 
 color("Wheat")
 union(){
-for(i = [0:studsSpacing:roofWidthIn])
-translate([
-    0,
-    i,
-    0]) 
-cube(size = [
-    totalLength,
-    plankThickness,
-    plankWidth]);
-
+roofFrame (
+    70,27,
+    totalWidth,totalLength,
+    roofHangover,20,
+    roofHangover,0,0,0);
+roofFrame (
+    70,27,
+    totalWidth,totalLength,
+    roofHangover,20,
+    roofHangover
+    +(totalLength-roofHangover*2),
+    totalWidth-roofHangover*2,
+    0,180);
 }
 
 
 // ---------- Roof ----------
 color("Tan")
 union(){
-for(i = [-plankWidth:plankWidth+0.6:totalLength])
 translate([
-    i,
+    0,
     -roofHangover,
     plankWidth]) 
 cube(size = [
-    plankWidth,
-    roofWidthOut,
-    plankThickness]);
+    totalLength,
+    totalWidth,
+    roofThickness]);
 
 }}}
 
@@ -85,8 +85,9 @@ studsAmount  = 2;  // kayak lenght, oposid diraction
 roofHeight = 1;
 
 
-roof (rotation,roofHeight,
-    studsAmount,
-    plankWidth,plankThickness,
+roof (
+    rotation,
+    70,27,
     totalWidth,totalLength,
-    roofHangover,roofWidthIn);
+    roofHangover,20,
+    0,0,0);

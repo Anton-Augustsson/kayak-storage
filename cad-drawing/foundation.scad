@@ -1,184 +1,244 @@
 
 module foundation (
-    rotation,
+    rotation,kayakHeight,
     plankWidth,plankThickness,
     totalWidth,totalLength,
-    roofWidthIn,groundScrewHeight,
-    pilleaLowestHeight,backPillarHeight,frontPillarHeight){
+    groundScrewHeight,
+    roofPlankWidth,
+    x,y,z){
     
     
 // ---------- Calculated varables ----------
-backPillarHeight  = pilleaLowestHeight
-    +tan(rotation)*plankWidth; // calculated
-frontPillarHeight = pilleaLowestHeight
-    +tan(rotation)*(roofWidthIn); // calculated     
 
+backPillarHeight = kayakHeight*2
+        +groundScrewHeight
+        +plankWidth*2; 
 
+        
 // ---------- Code ---------- 
 
-difference() {        
+
 union(){    
+translate([
+    x,
+    y,
+    z]) 
+union(){
 // ---------- pillar ---------- 
 color("Wheat")
+difference () {
 union(){
-
+    
 // piller 1
 translate([
     0,
-    0,
+    totalWidth-plankWidth,
     0]) 
 cube(size = [
     plankThickness,
     plankWidth,
-    frontPillarHeight]);
+    backPillarHeight
+    +roofPlankWidth*cos(rotation)]);
     
 // piller 2
 translate([
-    totalLength-plankThickness,
-    0,
-    0]) 
-cube(size = [
-    plankThickness,
-    plankWidth,
-    frontPillarHeight]);
-    
-// piller 3
-translate([
-    0,
+    totalLength/3*2-plankThickness,
     totalWidth-plankWidth,
     0]) 
 cube(size = [
     plankThickness,
     plankWidth,
-    backPillarHeight]);
-    
-// piller 4
+    backPillarHeight
+    +roofPlankWidth*cos(rotation)]);
+}
+
+union () {
 translate([
-    totalLength-plankThickness,
+    -1,
     totalWidth-plankWidth,
-    0]) 
-cube(size = [
-    plankThickness,
-    plankWidth,
-    backPillarHeight]);
-
-}
-
-union(){
-// right lower stude
-translate([
-    totalLength-plankThickness*2,
-    0,
-    groundScrewHeight]) 
-cube(size = [
-    plankThickness,
-    totalWidth,
-    plankWidth]);
-
-// right upper stude
-translate([
-    totalLength-plankThickness*2,
-    0,
-    pilleaLowestHeight-plankWidth]) 
-cube(size = [
-    plankThickness,
-    totalWidth,
-    plankWidth]);
-    
-// left lower stude
-translate([
-    plankThickness,
-    0,
-    groundScrewHeight]) 
-cube(size = [
-    plankThickness,
-    totalWidth,
-    plankWidth]);
-
-// left upper stude
-translate([
-    plankThickness,
-    0,
-    pilleaLowestHeight-plankWidth]) 
-cube(size = [
-    plankThickness,
-    totalWidth,
-    plankWidth]);
-}
-
-union(){
-// front stude
-translate([
-    0,
-    plankWidth,
-    groundScrewHeight+plankWidth]) 
-cube(size = [
-    totalLength,
-    plankThickness,
-    plankWidth]);
-
-// back stude
-translate([
-    0,
-    totalWidth-plankWidth-plankThickness,
-    groundScrewHeight+plankWidth]) 
-cube(size = [
-    totalLength,
-    plankThickness,
-    plankWidth]);
-
-}
-
-union(){
-// left kayak stude
-translate([
-    200,
-    0,
-    groundScrewHeight+plankWidth*2]) 
-cube(size = [
-    plankWidth,
-    totalWidth,
-    plankThickness]);
-
-// right kayak stude
-translate([
-    totalLength-200-plankWidth,
-    0,
-    groundScrewHeight+plankWidth*2]) 
-cube(size = [
-    plankWidth,
-    totalWidth,
-    plankThickness]);
-}
-
-}
-
-// moveDown = cos(rotation)*plankThickness
-// 
-
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight*2
+    +roofPlankWidth*cos(rotation)]) 
 rotate([-rotation,0,0])
-union(){
+cube(size = [
+    plankThickness+2,
+    plankWidth+9,
+    kayakHeight]);
+    
+translate([
+    totalLength/3*2
+    -plankThickness-1,
+    totalWidth-plankWidth+7,
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight*2
+    +roofPlankWidth*cos(rotation)]) 
+rotate([-rotation,0,0])
+cube(size = [
+    plankThickness+2,
+    plankWidth+9,
+    kayakHeight]);
+}}
+
+// ---------- shelf ---------- 
+color("Tan")
+union () {
+// piller 1 shelf 1
+translate([
+    -plankThickness,
+    0,
+    groundScrewHeight]) 
+cube(size = [
+    plankThickness,
+    totalWidth,
+    plankWidth]);
+
+// piller 1 shelf 2
+translate([
+    -plankThickness,
+    0,
+    groundScrewHeight
+    +plankWidth
+    +kayakHeight]) 
+cube(size = [
+    plankThickness,
+    totalWidth,
+    plankWidth]);
+    
+// piller 2 shelf 1
+translate([
+    totalLength/3*2,
+    0,
+    groundScrewHeight]) 
+cube(size = [
+    plankThickness,
+    totalWidth,
+    plankWidth]);
+    
+// piller 2 shelf 2
+translate([
+    totalLength/3*2,
+    0,
+    groundScrewHeight
+    +plankWidth
+    +kayakHeight]) 
+cube(size = [
+    plankThickness,
+    totalWidth,
+    plankWidth]);
+
+// stretcher top
 translate([
     0,
-    -291,
-    frontPillarHeight-cos(rotation)*plankThickness+19]) 
+    0,
+    groundScrewHeight
+    ]) 
 cube(size = [
-    plankWidth,
-    totalWidth+100,
-    plankThickness]);    
-
+    totalLength/3*2+plankThickness,
+    plankThickness,
+    plankWidth]);
+    
+// stretcher bottom
 translate([
-    totalLength-plankThickness,
-    -291,
-    frontPillarHeight-cos(rotation)*plankThickness+19]) 
+    0,
+    0,
+    groundScrewHeight
+    +plankWidth
+    +kayakHeight]) 
 cube(size = [
+    totalLength/3*2+plankThickness,
+    plankThickness,
+    plankWidth]);
+}   
+
+// --------- pillar filler--------- 
+color("Wheat")
+union () {
+// Filler left bottom
+translate([
+    -plankThickness,
+    totalWidth-plankWidth,
+    groundScrewHeight+plankWidth]) 
+cube(size = [
+    plankThickness,
     plankWidth,
-    totalWidth+100,
-    plankThickness]);    
+    kayakHeight]);
 
-}
+color("Wheat")
+difference () {
+// Filler left top
+translate([
+    -plankThickness,
+    totalWidth-plankWidth,
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight
+    ]) 
+cube(size = [
+    plankThickness,
+    plankWidth,
+    kayakHeight
+    ]);
 
-}}
+// remove angle
+translate([
+    -plankThickness-1,
+    totalWidth-plankWidth,
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight*2
+    ]) 
+rotate([-rotation,0,0])
+cube(size = [
+    plankThickness+1,
+    plankWidth+9,
+    kayakHeight]);
+}    
+
+
+// Filler right bottom
+color("Wheat")
+union () {
+// piller 1 shelf 1
+translate([
+    totalLength/3*2,
+    totalWidth-plankWidth,
+    groundScrewHeight+plankWidth]) 
+cube(size = [
+    plankThickness,
+    plankWidth,
+    kayakHeight]);
+    
+color("Wheat")
+difference () {
+// Filler right top
+translate([
+    totalLength/3*2,
+    totalWidth-plankWidth,
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight
+    ]) 
+cube(size = [
+    plankThickness,
+    plankWidth,
+    kayakHeight]);
+
+// remove angle
+translate([
+    totalLength/3*2,
+    totalWidth-plankWidth,
+    groundScrewHeight
+    +plankWidth*2
+    +kayakHeight*2
+    ]) 
+rotate([-rotation,0,0])
+cube(size = [
+    plankThickness+1,
+    plankWidth+9,
+    kayakHeight]);
+}}}}}}
 
 
 
@@ -187,7 +247,7 @@ cube(size = [
 
 
 // example
-rotation = 10;
+rotation = 20;
 
 plankWidth     = 140;  // pine
 plankThickness = 45;  // pine
@@ -201,13 +261,11 @@ pilleaLowestHeight = 1500; //
 
 groundScrewHeight = 100;
 
-
-
-
-foundation (
-    rotation,
+    
+foundation(
+    rotation,360,
     plankWidth,plankThickness,
     totalWidth,totalLength,
-    roofWidthIn,groundScrewHeight,
-    pilleaLowestHeight);    
-    
+    groundScrewHeight,
+    70,
+    totalLength/3,0,0);
