@@ -50,9 +50,34 @@ cube(size = [
     plankWidth,
     backPillarHeight
     +roofPlankWidth*cos(rotation)]);
+    
+// Piller stretcher bottom
+translate([
+    0,
+    totalWidth-plankWidth/2
+    -plankThickness/2,
+    backPillarHeight/4
+    ]) 
+cube(size = [
+    totalLength/3*2-plankThickness,
+    plankThickness,
+    plankWidth]);
+
+// Piller stretcher top
+translate([
+    0,
+    totalWidth-plankWidth/2
+    -plankThickness/2,
+    backPillarHeight/4*3
+    ]) 
+cube(size = [
+    totalLength/3*2-plankThickness,
+    plankThickness,
+    plankWidth]);
 }
 
 union () {
+// Piller removal left
 translate([
     -1,
     totalWidth-plankWidth,
@@ -65,7 +90,8 @@ cube(size = [
     plankThickness+2,
     plankWidth+9,
     kayakHeight]);
-    
+
+// Piller removal right    
 translate([
     totalLength/3*2
     -plankThickness-1,
@@ -150,7 +176,9 @@ cube(size = [
     totalLength/3*2+plankThickness,
     plankThickness,
     plankWidth]);
+
 }   
+
 
 // --------- pillar filler--------- 
 color("Wheat")
